@@ -12,7 +12,7 @@ public class PlayerController : MonoBehaviour
     float axisH, axisV; //横軸、縦軸
     
     public float speed = 3.0f; //スピード
-    public float angleZ; //角度
+    public float angleZ = -90; //角度
     int direction = 0; //アニメの方向番号
 
     public static int hp = 5; //プレイヤーの体力
@@ -42,7 +42,7 @@ public class PlayerController : MonoBehaviour
         VectorAnime(axisH,axisV); //方向アニメを決めるメソッド
     }
 
-        private void FixedUpdate()
+    private void FixedUpdate()
     {
         rbody.velocity = new Vector2(axisH, axisV).normalized * speed;
     }
@@ -54,16 +54,17 @@ public class PlayerController : MonoBehaviour
         //アニメ番号を一時的に記録
         int dir;
 
-        if(angleZ > -135 && angleZ < -45) dir = 0; //下
-        else if(angleZ >= -45 && angleZ <= 45) dir = 3; //右
-        else if(angleZ > 45 && angleZ < 135) dir = 1; // 上
-        else if(angleZ >= 135 && angleZ <= -135) dir = 2; //左
+        if (angleZ > -135 && angleZ < -45) dir = 0; //下
+        else if (angleZ >= -45 && angleZ <= 45) dir = 3; //右
+        else if (angleZ > 45 && angleZ < 135) dir = 1; // 上
+        //else if (angleZ >= 135 && angleZ <= -135) dir = 2; //左
+        else dir = 2;
 
         //前フレームのdirectionと今あるべきアニメ番号が異なっていなければそのまま
-        if(dir != direction)
+        if (dir != direction)
         {
             direction = dir;
-            anime.SetInteger("direction",direction);
+            anime.SetInteger("direction", direction);
         }
     }
 
