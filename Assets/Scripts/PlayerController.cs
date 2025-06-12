@@ -19,6 +19,8 @@ public class PlayerController : MonoBehaviour
     bool inDamage; //ダメージ中フラグ
     bool isMobileInput; //スマホ操作中かどうか
 
+    public float knockBack = 4.0f; //プレイヤーのノックバック
+
 
     // Start is called before the first frame update
     void Start()
@@ -44,6 +46,13 @@ public class PlayerController : MonoBehaviour
 
     private void FixedUpdate()
     {
+        if(inDamage)
+        {
+            //点滅処理が入る
+
+            return;
+        }
+
         rbody.velocity = new Vector2(axisH, axisV).normalized * speed;
     }
 
@@ -52,13 +61,26 @@ public class PlayerController : MonoBehaviour
         angleZ = GetAngle();
 
         //アニメ番号を一時的に記録
-        int dir;
+        int dir = direction;
 
-        if (angleZ > -135 && angleZ < -45) dir = 0; //下
-        else if (angleZ >= -45 && angleZ <= 45) dir = 3; //右
-        else if (angleZ > 45 && angleZ < 135) dir = 1; // 上
-        //else if (angleZ >= 135 && angleZ <= -135) dir = 2; //左
-        else dir = 2;
+        //if (angleZ > -135 && angleZ < -45) dir = 0; //下
+        //else if (angleZ >= -45 && angleZ <= 45) dir = 3; //右
+        //else if (angleZ > 45 && angleZ < 135) dir = 1; // 上
+        ////else if (angleZ >= 135 && angleZ <= -135) dir = 2; //左
+        //else dir = 2;
+
+        if(Mathf.Abs(h) >= Mathf.Abs(v))
+        {
+            if (h > 0) dir = 3; //右
+            else if (h < 0) dir = 2; //左
+        }
+        else
+        {
+            if (v > 0) dir = 1; //上
+            else if (v < 0) dir = 0; //下                
+        }
+
+
 
         //前フレームのdirectionと今あるべきアニメ番号が異なっていなければそのまま
         if (dir != direction)
@@ -93,8 +115,43 @@ public class PlayerController : MonoBehaviour
         return angle;
     }
 
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag("Enemy"))
+        {
+            GetDamage(collision.gameObject);
+        }
+    }
 
+    void GetDamage(GameObject enemy)
+    {
+        hp--;
+        if(hp > 0)
+        {
+            //動きが止まる
+            rbody.velocity = Vector2.zero;
 
+            //ノックバック
+            Vector3 v = (transform.position - enemy.transform.position).normalized * knockBack;
+            rbody.AddForce(v, ForceMode2D.Impulse);
+
+            //ダメージフラグをONにする
+            inDamage = true;
+
+            //時間差でダメージフラグをOFFに解除
+            Invoke("DamageEnd", 0.25f);
+        }
+        else
+        {
+            Debug.Log("ゲームオーバー");
+        }
+    }
+
+    void DamageEnd()
+    {
+        inDamage = false;
+        GetComponent<SpriteRenderer>().enabled = true;
+    }
 
 }
 
