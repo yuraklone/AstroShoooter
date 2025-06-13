@@ -34,6 +34,9 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+
+        if (GameController.gameState != "playing" || inDamage) return;
+
         if (!isMobileInput) //モバイル入力がないとき
         {
             axisH = Input.GetAxisRaw("Horizontal");　//水平方向を検知
@@ -46,9 +49,15 @@ public class PlayerController : MonoBehaviour
 
     private void FixedUpdate()
     {
+        if (GameController.gameState != "playing") return;
+        
         if(inDamage)
         {
-            //点滅処理が入る
+            //点滅処理
+            float value = Mathf.Sin(Time.time * 50); //valueに正負の波を作る ※Timeは経過時間
+            if(value > 0) GetComponent<SpriteRenderer>().enabled = true; //正の間には絵を表示
+            else GetComponent<SpriteRenderer>().enabled = false; //負の間には絵を非表示
+            
 
             return;
         }
@@ -149,8 +158,23 @@ public class PlayerController : MonoBehaviour
 
     void DamageEnd()
     {
-        inDamage = false;
-        GetComponent<SpriteRenderer>().enabled = true;
+        inDamage = false;　//フラグ解除
+        GetComponent<SpriteRenderer>().enabled = true;　//点滅が非表示で終わらないようにする
+    }
+
+    void GameOver()
+    {
+        GameController.gameState = "gameover";
+
+        GetComponent<CircleCollider2D>().enabled = false; //コライダーをオフにする
+        rbody.gravityScale = 1; //下へ移動
+        rbody.AddForce(new Vector2(0, 5), ForceMode2D.Impulse);　//跳ね上げ
+        anime.SetTrigger("death");　//死亡アニメの開始
+    }
+
+    public void PlayerDestroy()
+    {
+        Destroy(gameObject);
     }
 
 }

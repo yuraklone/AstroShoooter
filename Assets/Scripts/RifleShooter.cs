@@ -56,9 +56,9 @@ public class RifleShooter : MonoBehaviour
     void Attack()
     {
         //すでに攻撃中であれば何もしない
-        if (inAttack) return;
+        if (inAttack || GameController.hasBullet <=0) return;
 
-        
+        GameController.hasBullet--;
         inAttack = true; //攻撃フラグをON
 
         float angleZ = playerCnt.angleZ; //Playerの角度を取得

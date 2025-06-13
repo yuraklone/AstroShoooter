@@ -91,15 +91,19 @@ public class EnemyController : MonoBehaviour
         {
             hp--;
 
-            if (hp < 0)
+            if (hp <= 0)
             {
                 hp = 0;
                 GetComponent<CapsuleCollider2D>().enabled = false;
                 rbody.velocity = Vector2.zero;
-                GetComponent<Animator>().SetBool("death", true);
-                Destroy(gameObject, 1.0f);
+                GetComponent<Animator>().SetTrigger("death");
             }
         }
+    }
+
+    public void EnemyDestroy()
+    {
+        Destroy(gameObject);
     }
 
 }
