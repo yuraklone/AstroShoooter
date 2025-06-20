@@ -179,5 +179,23 @@ public class PlayerController : MonoBehaviour
         Destroy(gameObject);
     }
 
+    //モバイル操作
+    public void MobileAxis(float x,float y)
+    {
+        axisH = x;
+        axisV = y;
+        if(axisH == 0 &&  axisV == 0)
+        {
+            isMobileInput = false;
+        }
+        else
+        {
+            isMobileInput = true;
+        }
+    }
+
+
+
+
 }
 

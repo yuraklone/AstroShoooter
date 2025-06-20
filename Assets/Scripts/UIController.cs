@@ -12,6 +12,7 @@ public class UIController : MonoBehaviour
     public TextMeshProUGUI silverKeyText;
     public GameObject lightPanel;
     public GameObject[] lifes;
+    bool investigate;
 
     int hasBullet;
     int hasKeyG;
@@ -20,6 +21,8 @@ public class UIController : MonoBehaviour
     bool hasLight;
 
     public GameObject gameOverPanel; //ゲームオーバー時に出すパネル
+
+    public GameObject eKeyPanel;
 
 
     // Start is called before the first frame update
@@ -77,6 +80,12 @@ public class UIController : MonoBehaviour
             LifeDisplay();
         }
 
+        if(investigate != GameController.investigate)
+        {
+            investigate = GameController.investigate;
+            eKeyPanel.SetActive(investigate);
+        }
+
 
 
     }
@@ -127,6 +136,9 @@ public class UIController : MonoBehaviour
     {
         //BGMをストップ
         SoundController.soundController.PlayBgm(BGMType.None);
+
+        if (PlayerPrefs.GetInt("Life") <= 0) PlayerPrefs.SetInt("Life", 5);
+
         SaveSystem.LoadGame();
     }
 

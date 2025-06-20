@@ -53,7 +53,7 @@ public class RifleShooter : MonoBehaviour
     
     }
     
-    void Attack()
+    public void Attack()
     {
         //すでに攻撃中であれば何もしない
         if (inAttack || GameController.hasBullet <=0) return;

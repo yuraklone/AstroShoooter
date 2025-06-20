@@ -215,7 +215,7 @@ public class BossController : MonoBehaviour
     //ボス撃破後タイトルに戻す
     void GameClear()
     {
-        SceneManager.LoadScene("Title");
+        SceneManager.LoadScene("Ending");
     }
 
 
