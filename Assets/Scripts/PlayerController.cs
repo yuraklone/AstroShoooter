@@ -29,6 +29,8 @@ public class PlayerController : MonoBehaviour
         anime = GetComponent<Animator>();
 
         anime.SetInteger("direction",0); //デフォルトを下向きに
+
+
     }
 
     // Update is called once per frame
@@ -152,7 +154,7 @@ public class PlayerController : MonoBehaviour
         }
         else
         {
-            Debug.Log("ゲームオーバー");
+            GameOver();
         }
     }
 

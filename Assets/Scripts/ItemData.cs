@@ -40,6 +40,8 @@ public class ItemData : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        ExistCheck();
+
         rbody = GetComponent<Rigidbody2D>();
 
         //TalkCanvasを見つける
@@ -48,6 +50,8 @@ public class ItemData : MonoBehaviour
         //TalkCanvasの子からTalkPanel、TalkTextを見つける
         messagePanel = messageCanvas.transform.Find("TalkPanel").gameObject;
         messageText = messagePanel.transform.Find("TalkText").gameObject.GetComponent<TextMeshProUGUI>();
+
+
     }
 
     // Update is called once per frame
@@ -102,25 +106,36 @@ public class ItemData : MonoBehaviour
 
             }
 
+            if (!isTalk)
+            {
+
+
+                ItemDestroy(); //取ったらアイテム消滅
+            }
+            else
+            {
+                GameController.gameState = "talk";
+
+                string message = message1 + stockCount + message2; //トークウィンドウに出すメッセージの作成
+                messagePanel.SetActive(true); //UIパネルを表示
+                messageText.text = message; //テキストの内容を反映
+                talking = true; //会話が開始されている
+                Time.timeScale = 0f; //ゲーム進行を止める
+
+
+            }
+
 
         }
 
-        if (!isTalk)
+       
+        //SaveControllerの消費リストにまだ掲載されていなければ
+        if (!SaveController.Instance.IsConsumed(this.tag, arrangeId) && arrangeId != 0)
         {
-            ItemDestroy();　//取ったらアイテム消滅
+            //リストに追加
+            SaveController.Instance.ConsumedEvent(this.tag, arrangeId);
         }
-        else
-        {
-            GameController.gameState = "talk";
-            
-            string message = message1 + stockCount + message2; //トークウィンドウに出すメッセージの作成
-            messagePanel.SetActive(true); //UIパネルを表示
-            messageText.text = message;　//テキストの内容を反映
-            talking = true; //会話が開始されている
-            Time.timeScale = 0f; //ゲーム進行を止める
 
-
-        }
 
     }
 
@@ -131,4 +146,14 @@ public class ItemData : MonoBehaviour
         rbody.AddForce(new Vector2(0, 6), ForceMode2D.Impulse);
         Destroy(gameObject, 0.5f);
     }
+    void ExistCheck()
+    {
+        if (SaveController.Instance.IsConsumed(this.tag, arrangeId))
+        {
+            Destroy(gameObject);
+        }
+    }
+
+
+
 }

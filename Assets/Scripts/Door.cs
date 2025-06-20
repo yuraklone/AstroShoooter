@@ -24,6 +24,8 @@ public class Door : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        ExistCheck();
+
         if (isGoldDoor)
         {
             GetComponent<SpriteRenderer>().sprite = goldDoorImage;
@@ -57,6 +59,14 @@ public class Door : MonoBehaviour
                     talking = true; //会話モードON
                     GameController.gameState = "talk";
                     Time.timeScale = 0; //ゲーム進行を止める
+
+                    //SaveControllerの消費リストにまだ掲載されていなければ
+                    if (!SaveController.Instance.IsConsumed(this.tag, arrangeId))
+                    {
+                        //リストに追加
+                        SaveController.Instance.ConsumedEvent(this.tag, arrangeId);
+                    }
+
                 }
                 else if (!isGoldDoor && GameController.hasSilverKey > 0)
                 {
@@ -67,6 +77,14 @@ public class Door : MonoBehaviour
                     talking = true; //会話モードON
                     GameController.gameState = "talk";
                     Time.timeScale = 0; //ゲーム進行を止める
+
+                    //SaveControllerの消費リストにまだ掲載されていなければ
+                    if (!SaveController.Instance.IsConsumed(this.tag, arrangeId))
+                    {
+                        //リストに追加
+                        SaveController.Instance.ConsumedEvent(this.tag, arrangeId);
+                    }
+
                 }
                 //カギがないとき
                 else
@@ -106,12 +124,29 @@ public class Door : MonoBehaviour
             {
                 GameController.hasSilverKey--;
                 Destroy(gameObject);
+                
+                //SaveControllerの消費リストにまだ掲載されていなければ
+                if (!SaveController.Instance.IsConsumed(this.tag, arrangeId))
+                {
+                    //リストに追加
+                    SaveController.Instance.ConsumedEvent(this.tag, arrangeId);
+                }
+
             }
 
             if (isGoldDoor && GameController.hasGoldKey > 0)
             {
                 GameController.hasGoldKey--;
                 Destroy(gameObject);
+
+                //SaveControllerの消費リストにまだ掲載されていなければ
+                if (!SaveController.Instance.IsConsumed(this.tag, arrangeId))
+                {
+                    //リストに追加
+                    SaveController.Instance.ConsumedEvent(this.tag, arrangeId);
+                }
+
+
             }
 
 
@@ -139,4 +174,13 @@ public class Door : MonoBehaviour
         }
     }
 
+    void ExistCheck()
+    {
+        if (SaveController.Instance.IsConsumed(this.tag, arrangeId))
+        {
+            Destroy(gameObject);
+        }
+    }
 }
+
+

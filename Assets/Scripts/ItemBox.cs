@@ -23,7 +23,7 @@ public class ItemBox : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-
+        ExistCheck();
     }
 
     // Update is called once per frame
@@ -74,11 +74,26 @@ public class ItemBox : MonoBehaviour
             player = GameObject.FindGameObjectWithTag("Player"); //プレイヤー検索
             Instantiate(itemPrefab, player.transform.position, Quaternion.identity); //プレイヤーの位置にアイテム生成
 
+
+            //SaveControllerの消費リストにまだ掲載されていなければ
+            if (!SaveController.Instance.IsConsumed(this.tag, arrangeId))
+            {
+                //リストに追加
+                SaveController.Instance.ConsumedEvent(this.tag, arrangeId);
+            }
+
         }
 
     }
 
-
+    void ExistCheck()
+    {
+        if (SaveController.Instance.IsConsumed(this.tag, arrangeId))
+        {
+            isClosed = false;　//フラグをオープン状態に
+            GetComponent<SpriteRenderer>().sprite = openImage; //見た目を開いた箱
+        }
+    }
 
 
 }
