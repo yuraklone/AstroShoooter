@@ -12,6 +12,24 @@ EditorBuildSettings:
     path: Assets/Scenes/FloorA.unity
     guid: a5bd7db64e9d4c54caa434982eb0f742
   - enabled: 1
-    path: Assets/Scenes/RoomA.unity
+    path: Assets/Scenes/RoomB.unity
     guid: 3d5d7a6882ba4ce438eea96c2ae66746
+  - enabled: 1
+    path: Assets/Scenes/BossA.unity
+    guid: 0eb02875d6a998a41a0c069db252efbb
+  - enabled: 1
+    path: Assets/Scenes/Ending.unity
+    guid: 27b037434b048a44da5494c2116281ca
+  - enabled: 1
+    path: Assets/Scenes/Prologue.unity
+    guid: 3a1f67cced464de4eb7354eec4f6fb31
+  - enabled: 1
+    path: Assets/Scenes/RoomA.unity
+    guid: 07a56d4f9b77d41408f0435639e474a7
+  - enabled: 1
+    path: Assets/Scenes/RoomC.unity
+    guid: 204a441c763e4144a945223d1d2aa702
+  - enabled: 1
+    path: Assets/Scenes/Title.unity
+    guid: 17f5eab752e99b349bc1fafec4b39df1
   m_configObjects: {}

@@ -45,22 +45,22 @@ public class RoomController : MonoBehaviour
                 {
                     //各出入口の方向に応じた位置と角度を設定
                     case ExitDirection.up:
-                        y += 1;
+                        y += 2;
                         direction = 1;
                         angleZ = 90;
                         break;
                     case ExitDirection.down:
-                        y -= 1;
+                        y -= 2;
                         direction = 0;
                         angleZ = -90;
                         break;
                     case ExitDirection.left:
-                        x -= 1;
+                        x -= 2;
                         direction = 2;
                         angleZ = 180;
                         break;
                     case ExitDirection.right:
-                        x += 1;
+                        x += 2;
                         direction = 3;
                         angleZ = 0;
                         break;

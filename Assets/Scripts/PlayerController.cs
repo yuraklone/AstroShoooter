@@ -168,7 +168,7 @@ public class PlayerController : MonoBehaviour
     {
         GameController.gameState = "gameover";
 
-        GetComponent<CircleCollider2D>().enabled = false; //コライダーをオフにする
+        GetComponent<CapsuleCollider2D>().enabled = false; //コライダーをオフにする
         rbody.gravityScale = 1; //下へ移動
         rbody.AddForce(new Vector2(0, 5), ForceMode2D.Impulse);　//跳ね上げ
         anime.SetTrigger("death");　//死亡アニメの開始
